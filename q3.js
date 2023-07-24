@@ -16,6 +16,7 @@
 //     cnt = result.cnt;
 // }
 
+let start_time = new Date();    // 시간 측정 시작
 
 var movieIds = db.ml_movies.find({title:input_title},{_id:0, movieId:1}).map(function(result) {return result.movieId});
 
@@ -26,8 +27,12 @@ var sum = db.ml_ratings.aggregate([
                                     {$group:{_id:null, sum:{$sum:'$rating'}}}
                                 ]).map(function(result) {return result.sum});
 
+let end_time = new Date();  // 시간 측정 종료
+
 var avg = (sum / cnt).toFixed(3);
 print(avg);
+
+print("수행시간: " + ((end_time - start_time) / 1000.0) + "초");
 
 
 
